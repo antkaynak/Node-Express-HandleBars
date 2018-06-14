@@ -1,11 +1,26 @@
 
 const express = require('express');
 const hbs = require('hbs');
+const fs = require('fs');
 
 var app = express();
 
 hbs.registerPartials(__dirname+'/views/partials');
 app.set('view engine','hbs');
+
+//express middleware
+app.use((req,res,next)=>{
+    //add logger to log every request
+    const now = new Date().toString();
+    const log = `${now}: ${req.method} ${req.url}`;
+    console.log(log);
+    fs.appendFileSync('logs.txt',log+' \n', (err)=>{
+        if(err){
+            console.log('Unable to append to logs.txt');
+        }
+    });
+    next(); //only calling next completes
+})
 
 hbs.registerHelper('getCurrentYear', () => {
     return new Date().getFullYear();
