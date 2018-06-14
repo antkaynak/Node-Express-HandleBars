@@ -5,6 +5,11 @@ const fs = require('fs');
 
 var app = express();
 
+//get the port for the heroku app
+//HEROKU sets PORT enviroment
+const port = process.env.PORT || 3000;
+
+
 hbs.registerPartials(__dirname+'/views/partials');
 app.set('view engine','hbs');
 
@@ -40,4 +45,6 @@ app.get('/about', (req,res) => {
     });
 });
 
-app.listen('8080');
+app.listen(port, () => {
+    console.log(`listening port : ${port}`);
+});
